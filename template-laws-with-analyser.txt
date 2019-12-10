@@ -1,0 +1,59 @@
+curl -X PUT "localhost:9200/_template/laws_template?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index_patterns": ["laws-*"],
+  "settings": {
+    "number_of_shards": 1,
+    "analysis": {
+      "filter": {
+        "french_elision": {
+          "type":         "elision",
+          "articles_case": true,
+          "articles": [
+              "l", "m", "t", "qu", "n", "s",
+              "j", "d", "c", "jusqu", "quoiqu",
+              "lorsqu", "puisqu"
+            ]
+        },
+        "french_stop": {
+          "type":       "stop",
+          "stopwords":  "_french_" 
+        },
+        "french_stemmer": {
+          "type":       "stemmer",
+          "language":   "light_french"
+        }
+      },
+      "analyzer": {
+        "law_text_analyser": {
+          "type": "custom",
+          "tokenizer":  "standard",
+          "char_filter": [
+            "html_strip"
+          ],
+          "filter": [
+            "asciifolding",
+            "french_elision",
+            "lowercase",
+            "french_stop",
+            "french_stemmer"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "articleText": {
+        "type": "text",
+        "analyzer": "law_text_analyser"
+      },
+      "articleTextHTML": {
+        "type": "text",
+        "analyzer": "law_text_analyser"
+      },
+      "articleId": {
+        "type": "keyword"
+      }
+    }
+  }
+}'
