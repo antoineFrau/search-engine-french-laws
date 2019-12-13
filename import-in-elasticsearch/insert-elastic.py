@@ -1,4 +1,4 @@
-from lawsByRowWithParentIDArray import laws
+from lawsByRowWithParentAsObject import laws
 from datetime import datetime
 from elasticsearch import Elasticsearch
 import uuid
@@ -11,9 +11,8 @@ parser.add_argument("-I", "--index", help="Indicate the index name for elasticse
 # read arguments from the command line
 args = parser.parse_args()
 index_name = args.index
-print(index_name)
 
 es = Elasticsearch()
 # Insert all row from lawsArrayFromJS into elasticsearch
-# for article in laws:
-#     res = es.index(index="laws-all", doc_type='_doc', id=uuid.uuid4(), body=article)
+for article in laws:
+    res = es.index(index=index_name, doc_type='_doc', id=uuid.uuid4(), body=article)
