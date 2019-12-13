@@ -29,9 +29,9 @@
           </div>
         </div>
         <footer class="card-footer" v-if="isOpen">
-          <a href="#" class="card-footer-item">Enregistrer</a>
-          <a href="#" class="card-footer-item">Copier</a>
+          <a href="#" v-on:click="goToFullArticle" class="card-footer-item">En savoir plus</a>
           <a href="#" class="card-footer-item">Partager</a>
+          <a href="#" class="card-footer-item">Enregistrer</a>
         </footer>
       </div>
     </div>
@@ -47,10 +47,26 @@ export default {
       isOpen: true
     }
   },
-  props: ["text", "textHtml", "id", "parentIds", "kindOfLaw"],
+  props: ["text", "textHtml", "id", "esId", "parents", "kindOfLaw"],
   methods: {
     hideArticle () {
       this.isOpen = (!this.isOpen)
+    },
+    goToFullArticle () {
+      this.$router.push({
+            name: 'full-article',
+            params: {
+              id: this.esId,
+              articleData: {
+                "id": this.id,
+                "esId": this.esId,
+                "text": this.text,
+                "textHtml": this.textHtml,
+                "parents": this.parents,
+                "kindOfLaw": this.kindOfLaw
+            }
+          }
+      })
     }
   }
 }

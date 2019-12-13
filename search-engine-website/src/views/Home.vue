@@ -3,39 +3,28 @@
     <section class="hero is-small">
         <div class="hero-body">
             <div class="container" >
-            <div class="columns is-vcentered">
-              <b-field class="column">
-                <b-input
-                    placeholder="Recherche..."
-                    type="search"
-                    size="is-large"
-                    v-model="search"
-                    icon="magnify"
-                    @keydown.native.enter="searchLaws" 
-                    rounded>
-                </b-input>
-              </b-field>
+              <div class="columns is-vcentered">
+                <b-field class="column">
+                  <b-input
+                      placeholder="Recherche..."
+                      type="search"
+                      size="is-large"
+                      v-model="search"
+                      icon="magnify"
+                      @keydown.native.enter="searchLaws" 
+                      rounded>
+                  </b-input>
+                </b-field>
 
-              <a class="column is-1" v-on:click="this.showHideAll">
-                <span v-show="currentArticleListState" class="icon">
-                  <i class="fas fa-angle-double-up"></i>
-                </span>
-                <span v-show="currentArticleListState === false" class="icon">
-                  <i class="fas fa-angle-double-down"></i>
-                </span>
-              </a>
-            </div>
-              <!-- <div class="columns is-one-third has-text-centered">
-                <div class="column">
-                  <b-checkbox size="is-medium" v-model="legislativeSearch">Législative</b-checkbox>
-                </div>
-                <div class="column is-one-third">
-                  <b-checkbox size="is-medium" v-model="reglementaireSearch">Réglementaire</b-checkbox>
-                </div>
-                <div class="column is-one-third">
-                  <b-checkbox size="is-medium" v-model="annexeSearch">Annexe</b-checkbox>
-                </div>
-              </div> -->
+                <a class="column is-1" v-on:click="this.showHideAll">
+                  <span v-show="currentArticleListState" class="icon">
+                    <i class="fas fa-angle-double-up"></i>
+                  </span>
+                  <span v-show="currentArticleListState === false" class="icon">
+                    <i class="fas fa-angle-double-down"></i>
+                  </span>
+                </a>
+              </div>
             </div>
         </div>
     </section>
@@ -49,10 +38,11 @@
         v-for="law in laws"
         v-bind:key="law._source.articleId"
         :id="law._source.articleId"
+        :esId="law._id"
         :text="law._source.articleText"
         :textHtml="law._source.articleTextHTML"
-        :parentIds="law._source.listParentId"
-        :kindOfLaw="findKindOfLaw(law._source.listParentId)"
+        :parents="law._source.listParentId"
+        :kindOfLaw="findKindOfLaw(law._source.listParentId[0].parentId)"
         ref="article"
       />
     </section>
@@ -64,7 +54,7 @@
 
 
 <script>
-import SearchService from '../services/SearchService';
+import SearchService from '../services/SearchService'
 import Article from '../components/Article'
 
 export default {
@@ -93,7 +83,7 @@ export default {
       })
     },
     findKindOfLaw (parentId) {
-      switch (parentId[0]) {
+      switch (parentId) {
         case "LEGISCTA000006108136":
           return "Législative"
           break;

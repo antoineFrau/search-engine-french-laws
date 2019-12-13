@@ -24,3 +24,7 @@ yarn run test
 ```
 yarn run lint
 ```
+
+## Configuration
+
+You may change the [Api.js](src/services/Api.js) file to match with your own environement.
