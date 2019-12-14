@@ -1,6 +1,9 @@
 # Search engine
 > Able french citizens to search in French Construction and Housing Law Code
 
+## Demo
+You can see the demonstration on this [video](video/search-engine-demo.mp4)
+
 ## Elasticsearch
 
 ### Docker
